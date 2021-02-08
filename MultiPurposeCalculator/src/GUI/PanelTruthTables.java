@@ -26,8 +26,9 @@ public class PanelTruthTables
 		
 		
 		//Panel Truth Tables
-		panelTruthTables = new JPanel(){
-            /**
+		panelTruthTables = new JPanel()
+		{
+			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
@@ -39,6 +40,7 @@ public class PanelTruthTables
             }
         };
 		panelTruthTables.setName("TRUTH_TABLES");
+		panelTruthTables.setVisible(false);
 		container = PanelContainer.getPanel(EPanelName.CONTAINER);
 		container.add(panelTruthTables, "TRUTH_TABLES");
 	}

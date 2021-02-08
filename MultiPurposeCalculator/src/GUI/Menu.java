@@ -1,37 +1,35 @@
 package GUI;
 
 import java.awt.CardLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JMenuItem;
 
 public class Menu 
 {
-	private JFrame frame;
+	private static JFrame frame;
 	private JMenuBar menuBar;
-	private JMenu mnUtilities;
-	private JMenu operationMenu;
-	private JRadioButtonMenuItem rdbtOperationBinary;
-	private JMenu converterMenu;
-	private JRadioButtonMenuItem rdbtConverterBinary;
-	private JLabel currentUtilityLabel;
+	private JMenu miscMenu;
+	private JRadioButtonMenuItem rdbtnCalculator;
 	private JRadioButtonMenuItem rdbtComplement;
-	private JMenuItem mntmTruthTables;
+	private JRadioButtonMenuItem rdbtTruthTable;
+	private JRadioButtonMenuItem rdbtnLogicProperties;
 	
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public void setupMenu(Core core)
 	{
 		frame = core.getFrame();
 		
+		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
 		//Main menu bar
 		menuBar = new JMenuBar();
@@ -39,74 +37,39 @@ public class Menu
 		
 		
 		/*
-		 * UTILITIES
-		 * SUB MENU OF MAIN MENU
-		 */
-		mnUtilities = new JMenu("Utilities");
-		menuBar.add(mnUtilities);	
-		
-		
-		/*
-		 * OPERATION 
-		 * SUB MENU OF UTILITIES
-		 */
-		operationMenu = new JMenu("Operation");
-		mnUtilities.add(operationMenu);
-		
-		//Radio Button Binary
-		rdbtOperationBinary = new JRadioButtonMenuItem("Binary");
-		rdbtOperationBinary.setName("Binary");
-		operationMenu.add(rdbtOperationBinary);		
-		rdbtOperationBinary.addActionListener(getOperationActionListener());
-			
-	
-		/*
-		 * CONVERSION
-		 * SUB MENU OF UTILITIES
-		 */
-		converterMenu = new JMenu("Conversions");
-		mnUtilities.add(converterMenu);	
-		
-		//Radio Button Binary
-		rdbtConverterBinary = new JRadioButtonMenuItem("Binary");
-		rdbtConverterBinary.setName("Binary");
-		converterMenu.add(rdbtConverterBinary);		
-		rdbtConverterBinary.addActionListener(getConversionActionListener());
-		
-		//Radio Button Complement
-		rdbtComplement = new JRadioButtonMenuItem("Complement");
-		rdbtComplement.setName("Complement");
-		converterMenu.add(rdbtComplement);
-		rdbtComplement.addActionListener(getConversionActionListener());
-		
-		
-		/*
 		 * RADIO BUTTON GROUP
 		 * All the radio buttons in this panel are linked together
 		 */
-		ButtonGroup rdbtGroup= new ButtonGroup();	
-		rdbtGroup.add(rdbtConverterBinary);
-		rdbtGroup.add(rdbtOperationBinary);
+		ButtonGroup rdbtGroup= new ButtonGroup();
+		
+		rdbtnCalculator = new JRadioButtonMenuItem("Calculator");
+		rdbtnCalculator.setName("(Calculator)");
+		rdbtnCalculator.setSelected(true);
+		rdbtnCalculator.addActionListener(getActionListener());
+		menuBar.add(rdbtnCalculator);
+		
+		miscMenu = new JMenu("Misc.");
+		menuBar.add(miscMenu);
+		
+		rdbtComplement = new JRadioButtonMenuItem("Conversion Complement");
+		rdbtComplement.setName("(Conversion Complement)");
+		rdbtComplement.addActionListener(getActionListener());
+		miscMenu.add(rdbtComplement);
+		
+		rdbtTruthTable = new JRadioButtonMenuItem("Truth Tables");
+		rdbtTruthTable.setName("(Truth Tables)");
+		rdbtTruthTable.addActionListener(getActionListener());
+		miscMenu.add(rdbtTruthTable);
+		
+		rdbtnLogicProperties = new JRadioButtonMenuItem("Properties of Logical Operators");
+		rdbtnLogicProperties.setName("(Properties of Logical Operators)");
+		rdbtnLogicProperties.addActionListener(getActionListener());
+		miscMenu.add(rdbtnLogicProperties);
+		
+		rdbtGroup.add(rdbtnCalculator);
 		rdbtGroup.add(rdbtComplement);
-		
-		
-		/*
-		 * TRUTH TABLES
-		 * SUB MENU OF UTILITIES
-		 */
-		mntmTruthTables = new JMenuItem("Truth Tables");
-		mnUtilities.add(mntmTruthTables);
-		mntmTruthTables.addActionListener(getTruthTableActionListener());
-			
-		
-		/*
-		 * UTILITY LABEL
-		 * Used to display the current panel shown
-		 */
-		currentUtilityLabel = new JLabel();
-		currentUtilityLabel.setFont(new Font("Tahoma", Font.ITALIC, 11));
-		menuBar.add(currentUtilityLabel);
-		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		rdbtGroup.add(rdbtTruthTable);
+		rdbtGroup.add(rdbtnLogicProperties);
 	}	
 	
 	
@@ -114,69 +77,36 @@ public class Menu
 	 * GETTER FOR OPERATION ACTION LISTENER
 	 * Calls the PanelContainer swapPanel() method with the name of the panel to swap to as argument
 	 */
-	private ActionListener getOperationActionListener()
+	private ActionListener getActionListener()
 	{
 		return  new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
 			{
 				AbstractButton radioButton = (AbstractButton) actionEvent.getSource();
+				String buttonName = radioButton.getName();
 				
-				switch(radioButton.getName())
+				switch(buttonName)
 				{
-				case "Binary":
-					PanelContainer.swapPanel(EPanelName.OPERATION_BINARY);
-					currentUtilityLabel.setText("(Binary - Operations)");
+				case "(Calculator)":
+					PanelContainer.swapPanel(EPanelName.CALCULATOR);
 					break;
-				}
-			}
-		};
-	}
-	
-	
-	/*
-	 * GETTER FOR CONVERSION ACTION LISTENER
-	 * Calls the PanelContainer swapPanel() method with the name of the panel to swap to as argument
-	 */
-	private ActionListener getConversionActionListener()
-	{
-		return new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent actionEvent) 
-			{
-				AbstractButton radioButton = (AbstractButton) actionEvent.getSource();
-				
-				switch(radioButton.getName())
-				{
-				case "Binary":
-					PanelContainer.swapPanel(EPanelName.CONVERTER_BINARY);
-					currentUtilityLabel.setText("(Binary - Conversion)");
-					break;
-				case "Complement":
+				case "(Conversion Complement)":
 					PanelContainer.swapPanel(EPanelName.CONVERTER_COMPLEMENT);
-					currentUtilityLabel.setText("(Conversion - Complement)");
+					break;
+				case "(Truth Tables)":
+					PanelContainer.swapPanel(EPanelName.TRUTH_TABLES);
+					break;	
+				case "(Properties of Logical Operators)":
+					PanelContainer.swapPanel(EPanelName.LOGICAL_PROPERTIES);
 					break;
 				}
+				
+				frame.setTitle("Multi Purpose Calculator - " + buttonName);
 			}
 		};
 	}
 	
-	
-	/*
-	 * GETTER FOR TRUTH TABLE ACTION LISTENER
-	 * Calls the PanelContainer swapPanel() method with the name of the panel to swap to as argument
-	 */
-	private ActionListener getTruthTableActionListener()
-	{
-		return  new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent actionEvent) 
-			{		
-				PanelContainer.swapPanel(EPanelName.TRUTH_TABLES);
-				currentUtilityLabel.setText("(Truth Tables)");
-			}
-		};
-	}
 }
 	
 	

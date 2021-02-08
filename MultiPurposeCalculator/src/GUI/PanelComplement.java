@@ -20,9 +20,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 
 public class PanelComplement 
@@ -48,7 +52,7 @@ public class PanelComplement
 	private JLabel decimalLabel;
 	private JButton refreshButton;
 	BufferedImage refreshButtonImage = null;
-	private ImageIcon refreshIcon = new ImageIcon(getClass().getResource("/refresh_icon.jpg"));
+	private ImageIcon refreshIcon = new ImageIcon(getClass().getResource("/refresh_icon.png"));
 
 	DocumentListener documentListener;
 	private ArrayList<Component> order;
@@ -78,7 +82,22 @@ public class PanelComplement
 		inputDecimal.setBounds(290,42,292,32);
 		inputDecimal.setColumns(30);
 		inputDecimal.setVisible(false);
+		Action sendDecimalInput = new AbstractAction()
+		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e)
+			{
+					convertButtonAction();
+			}
+		};
+		inputDecimal.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "sendDecimalInput");
+		inputDecimal.getActionMap().put("sendDecimalInput", sendDecimalInput);
 		panelComplement.add(inputDecimal);
+		
 		
 		createDocumentListenerForBites();
 		
@@ -166,12 +185,33 @@ public class PanelComplement
 		
 		//Add all the JTextField inputBite1-8 to an array
 		addInputBitesToArray();
+
 		
 		convertButton = new JButton("Convert");
 		convertButton.setFont(new Font("Tahoma", Font.BOLD, 15));
 		convertButton.setBounds(359, 96, 158, 42);
-		convertButton.addActionListener(getConvertButtonActionListener());
+		convertButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent actionEvent)
+			{
+				convertButtonAction();
+			}
+		});
 		panelComplement.add(convertButton);
+		Action sendInput = new AbstractAction()
+		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e)
+			{
+					convertButtonAction();
+			}
+		};
+		convertButton.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "sendInput");
+		convertButton.getActionMap().put("sendInput", sendInput);
 		
 		resultDecimal = new JTextPane();
 		resultDecimal.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -223,83 +263,72 @@ public class PanelComplement
 	}
 	
 	
-	/*
-	 * 				ACTION LISTENER FOR CONVERT BUTTON
-	 * 
-	 */
-	private ActionListener getConvertButtonActionListener()
+	private void convertButtonAction()
 	{
-		return new ActionListener()
+		String input;
+		String decimalResult;
+		String complementTwoResult;
+		String signModuleResult;
+		
+		switch(complementSelection)
 		{
-			public void actionPerformed(ActionEvent actionEvent)
+		case NONE:
+			resultDecimal.setText("Error! Select the conversion type");
+			resultSignModule.setText("Error! Select the conversion type");
+			result2sComplement.setText("Error! Select the conversion type");
+			break;
+		case DECIMAL:
+			input = inputDecimal.getText();
+			
+			if(signModuleComplement.isValidInput(input, EBaseSelection.DECIMAL))
 			{
-				String input;
-				String decimalResult;
-				String complementTwoResult;
-				String signModuleResult;
-				
-				switch(complementSelection)
-				{
-				case NONE:
-					resultDecimal.setText("Error! Select the conversion type");
-					resultSignModule.setText("Error! Select the conversion type");
-					result2sComplement.setText("Error! Select the conversion type");
-					break;
-				case DECIMAL:
-					input = inputDecimal.getText();
-					
-					if(signModuleComplement.isValidInput(input, EBaseSelection.DECIMAL))
-					{
-						signModuleResult = signModuleComplement.fromDecimal(input, EComplementSelection.SIGN_MODULE, EBaseSelection.BINARY);
-						resultSignModule.setText(signModuleResult);
-						complementTwoResult = signModuleComplement.fromDecimal(input, EComplementSelection.COMPLEMENT_TWO, EBaseSelection.BINARY);
-						result2sComplement.setText(complementTwoResult);
-						resultDecimal.setText("");
-					}
-					else
-					{
-						displayInvalidInput();
-					}
-					break;
-				case SIGN_MODULE:
-					input = getBitesInput();
-					
-					if(signModuleComplement.isValidInput(input, EBaseSelection.BINARY))
-					{
-						decimalResult = signModuleComplement.toDecimal(input, complementSelection, EBaseSelection.BINARY);
-						resultDecimal.setText(decimalResult);
-						complementTwoResult = signModuleComplement.fromDecimal(decimalResult, EComplementSelection.COMPLEMENT_TWO, EBaseSelection.BINARY);
-						result2sComplement.setText(complementTwoResult);
-						resultSignModule.setText("");
-					}
-					else
-					{
-						displayInvalidInput();
-					}
-					break;
-				case COMPLEMENT_TWO:
-					input = getBitesInput();
-					
-					if(signModuleComplement.isValidInput(input, EBaseSelection.BINARY))
-					{
-						decimalResult = signModuleComplement.toDecimal(input, complementSelection, EBaseSelection.BINARY);
-						resultDecimal.setText(decimalResult);
-						signModuleResult = signModuleComplement.fromDecimal(decimalResult, EComplementSelection.SIGN_MODULE, EBaseSelection.BINARY);
-						resultSignModule.setText(signModuleResult);
-						result2sComplement.setText("");
-					}
-					else
-					{
-						displayInvalidInput();
-					}
-					break;
-				default:
-					break;
-				}
+				signModuleResult = signModuleComplement.fromDecimal(input, EComplementSelection.SIGN_MODULE, EBaseSelection.BINARY);
+				resultSignModule.setText(signModuleResult);
+				complementTwoResult = signModuleComplement.fromDecimal(input, EComplementSelection.COMPLEMENT_TWO, EBaseSelection.BINARY);
+				result2sComplement.setText(complementTwoResult);
+				resultDecimal.setText("");
 			}
-		};
+			else
+			{
+				displayInvalidInput();
+			}
+			break;
+		case SIGN_MODULE:
+			input = getBitesInput();
+			
+			if(signModuleComplement.isValidInput(input, EBaseSelection.BINARY))
+			{
+				decimalResult = signModuleComplement.toDecimal(input, complementSelection, EBaseSelection.BINARY);
+				resultDecimal.setText(decimalResult);
+				complementTwoResult = signModuleComplement.fromDecimal(decimalResult, EComplementSelection.COMPLEMENT_TWO, EBaseSelection.BINARY);
+				result2sComplement.setText(complementTwoResult);
+				resultSignModule.setText("");
+			}
+			else
+			{
+				displayInvalidInput();
+			}
+			break;
+		case COMPLEMENT_TWO:
+			input = getBitesInput();
+			
+			if(signModuleComplement.isValidInput(input, EBaseSelection.BINARY))
+			{
+				decimalResult = signModuleComplement.toDecimal(input, complementSelection, EBaseSelection.BINARY);
+				resultDecimal.setText(decimalResult);
+				signModuleResult = signModuleComplement.fromDecimal(decimalResult, EComplementSelection.SIGN_MODULE, EBaseSelection.BINARY);
+				resultSignModule.setText(signModuleResult);
+				result2sComplement.setText("");
+			}
+			else
+			{
+				displayInvalidInput();
+			}
+			break;
+		default:
+			break;
+		}
 	}
-	
 	
 	/*
 	 * 				ITEM LISTENER FOR CONVERSION COMBO BOX

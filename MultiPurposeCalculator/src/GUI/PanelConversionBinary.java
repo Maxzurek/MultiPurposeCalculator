@@ -36,9 +36,13 @@ public class PanelConversionBinary
 	private JButton convertButton;
 	private JComboBox<Object> comboBox ;
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public void setupPanel(Core core)
 	{	
 		panelConversionBinary = new JPanel();
+		panelConversionBinary.setVisible(false);
 		container = PanelContainer.getPanel(EPanelName.CONTAINER);
 		container.add(panelConversionBinary);
 		

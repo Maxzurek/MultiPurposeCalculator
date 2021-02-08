@@ -12,7 +12,7 @@ public class Core
 	private Menu menu;
 	private PanelContainer panelContainer;
 	private static FileWriter myWriter;
-	private static String version = "4.4";
+	private static String version = "5.4";
 
 	/**
 	 * Launch the application.
@@ -61,8 +61,8 @@ public class Core
 	private void initialize() 
 	{
 		frame = new JFrame();
-		frame.setTitle("Multi Purpose Calculator");
-		frame.setBounds(100, 100, 650, 600);
+		frame.setTitle("Multi Purpose Calculator - (Calculator)");
+		frame.setBounds(100, 100, 665, 660);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		menu = new Menu();

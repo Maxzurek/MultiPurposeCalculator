@@ -6,11 +6,16 @@ public enum EBaseSelection
 	DECIMAL(10),
 	BINARY(2),
 	OCTAL(8),
-	HEXA(16);
+	HEXA(16),
+	LOGICAL(1);
 		
 	private final int baseValue;
 		
-	private EBaseSelection(int baseValue)
+	EBaseSelection()
+	{
+		this.baseValue = 0;
+	}
+	EBaseSelection(int baseValue)
 	{
 		this.baseValue = baseValue;
 	}

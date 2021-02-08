@@ -45,6 +45,7 @@ public class PanelOperationBinary
 	public void setupPanel(Core core) 
 	{
 		panelOperationBinary = new JPanel();
+		panelOperationBinary.setVisible(false);
 		container = PanelContainer.getPanel(EPanelName.CONTAINER);	
 		panelOperationBinary.setName("OPERATION_BINARY");
 		

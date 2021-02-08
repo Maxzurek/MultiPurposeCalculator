@@ -11,12 +11,13 @@ public class PanelContainer
 {
 	private static JFrame frame;
 	
-	private static  JPanel panelContainer;
-	private static PanelWelcome panelWelcome;
+	private static JPanel panelContainer;
 	private static PanelConversionBinary panelConversionBinary;
 	private static PanelOperationBinary panelOperationBinary;
-	private static  PanelComplement panelComplement;
+	private static PanelComplement panelComplement;
 	private static PanelTruthTables panelTruthTables;
+	private static PanelCalculator panelCalculator;
+	private static PanelLogicalProperties panelLogicalProperties;
 	
 	public void setupPanels(Core core)
 	{
@@ -24,9 +25,9 @@ public class PanelContainer
 		panelContainer = new JPanel();
 		frame.getContentPane().add(panelContainer, "CONTAINER");
 		panelContainer.setLayout(new CardLayout(0, 0));
-		
-		panelWelcome = new PanelWelcome();
-		panelWelcome.setupPanel(core);
+
+		panelCalculator = new PanelCalculator();
+		panelCalculator.setupPanel(core);
 		
 		panelConversionBinary = new PanelConversionBinary();
 		panelConversionBinary.setupPanel(core);
@@ -39,6 +40,10 @@ public class PanelContainer
 		
 		panelTruthTables = new PanelTruthTables();
 		panelTruthTables.setupPanel(core);
+		
+		panelLogicalProperties = new PanelLogicalProperties();
+		panelLogicalProperties.setupPanel(core);
+		
 	}
 	
 	public static void swapPanel(EPanelName panelToSwapTo)
@@ -89,12 +94,23 @@ public class PanelContainer
 			return panelContainer;
 		case CONVERTER_BINARY:
 			return panelConversionBinary.getPanel();
+		case LOGICAL_PROPERTIES:
+			return panelLogicalProperties.getPanel();
 		case OPERATION_BINARY:
 			return panelOperationBinary.getPanel();
 		case TRUTH_TABLES:
 			return panelTruthTables.getPanel();
-		case WELCOME:
-			return panelWelcome.getPanel();
+		default:
+			return null;
+		}
+	}
+	
+	public static JLayeredPane getLayeredPane(EPanelName panelName)
+	{
+		switch(panelName)
+		{
+		case CALCULATOR:
+			return panelCalculator.getPanel();
 		default:
 			return null;
 		}
@@ -104,20 +120,23 @@ public class PanelContainer
 	{
 		switch(panelName)
 		{
+		case CALCULATOR:
+			frame.setSize(665, 660);
+			break;
 		case CONVERTER_BINARY:
-			frame.setSize(650, 600);
+			frame.setSize(665, 660);
+			break;
+		case LOGICAL_PROPERTIES:
+			frame.setSize(631,860);
 			break;
 		case OPERATION_BINARY:
-			frame.setSize(650, 600);
+			frame.setSize(665, 660);
 			break;
 		case TRUTH_TABLES:
 			frame.setSize(815, 620);
 			break;
-		case WELCOME:
-			frame.setSize(650, 600);
-			break;
 		default:
-			frame.setSize(650, 600);
+			frame.setSize(665, 660);
 			break;
 		}
 	}
