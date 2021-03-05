@@ -3,8 +3,8 @@ package GUI;
 import java.awt.EventQueue;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.swing.JFrame;
+
 
 public class Core 
 {
@@ -12,7 +12,7 @@ public class Core
 	private Menu menu;
 	private PanelContainer panelContainer;
 	private static FileWriter myWriter;
-	private static String version = "5.4";
+	private static String version = "7.0";
 
 	/**
 	 * Launch the application.
@@ -64,7 +64,7 @@ public class Core
 		frame.setTitle("Multi Purpose Calculator - (Calculator)");
 		frame.setBounds(100, 100, 665, 660);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+				
 		menu = new Menu();
 		menu.setupMenu(this);
 		

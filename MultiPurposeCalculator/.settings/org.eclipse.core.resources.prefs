@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/GUI/PanelCalculator.java=UTF-8
+encoding//src/GUI/PanelLogicButtons.java=UTF-8
+encoding//src/GUI/PanelSetButtons.java=UTF-8
 encoding//src/utilities/LogicalExpressionCalculator.java=UTF-8
+encoding//src/utilities/SetOperationCalculator.java=UTF-8

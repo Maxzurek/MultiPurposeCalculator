@@ -131,10 +131,10 @@ public class ExpressionCalculator
 	
 	private boolean isValidChar(char c, EBaseSelection baseSelection)
 	{
-		final String DECIMAL_VALID_CHARS = "0123456789()^*/+-. ";
-		final String BINARY_VALID_CHARS = "01()^*/+-. ";
-		final String OCTAL_VALID_CHARS = "01234567()^*/+-. ";
-		final String HEXA_VALID_CHARS = "0123456789abcdef()^*/+-. ";
+		final String DECIMAL_VALID_CHARS = "0123456789()^*/+-., ";
+		final String BINARY_VALID_CHARS = "01()^*/+-., ";
+		final String OCTAL_VALID_CHARS = "01234567()^*/+-., ";
+		final String HEXA_VALID_CHARS = "0123456789abcdef()^*/+-., ";
 		char[] validChars;
 		
 		switch(baseSelection)
@@ -193,9 +193,16 @@ public class ExpressionCalculator
 					expression.add(Character.toString(chars[i]));
 				}
 			}
-			else if(isValidChar(chars[i], baseSelection))			//If the token is valid,it is an operand
+			else if(isValidChar(chars[i], baseSelection))	//If the token is valid,it is an operand
 			{
-				buffer = buffer.append(chars[i]);	//Append operand to the buffer	
+				if(chars[i] == ',')
+				{
+					buffer = buffer.append('.');
+				}
+				else
+				{
+					buffer = buffer.append(chars[i]);			//Append operand to the buffer			
+				}
 			}
 		}
 		

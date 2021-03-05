@@ -7,7 +7,8 @@ public enum EBaseSelection
 	BINARY(2),
 	OCTAL(8),
 	HEXA(16),
-	LOGICAL(1);
+	LOGICAL(0),
+	SET(0);
 		
 	private final int baseValue;
 		
