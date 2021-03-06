@@ -54,7 +54,7 @@ public class SetElementsFrame
 		contentPane = (JPanel) setElementsframe.getContentPane();
 		contentPane.setLayout(gridBagLayout);
 		
-		Object[] comboBoxSelection = {"(Select number of set)", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+		Object[] comboBoxSelection = {"(Select number of set)", "1", "2", "3", "4"};
 		selectionComboBox = new JComboBox<Object>(comboBoxSelection);
 		selectionComboBox.setFont(new Font("Tahoma", Font.BOLD, 13));
 		//selectionComboBox.setBounds(74, 554, 318, 35);
@@ -110,7 +110,7 @@ public class SetElementsFrame
 			public void itemStateChanged(ItemEvent event) 
 			{
 				int selectedIndex = selectionComboBox.getSelectedIndex();
-				String setNames = "UABCDEFGHI";
+				String setNames = "UABC";
 				
 				if(currentComboBoxIndex != selectedIndex)
 				{

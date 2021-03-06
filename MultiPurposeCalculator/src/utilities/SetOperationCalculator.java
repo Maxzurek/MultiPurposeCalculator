@@ -25,9 +25,20 @@ public class SetOperationCalculator
 		
 		Token(String elements)						//Overloaded constructor 1 argument
 		{
+			String buffer = "";
+			
 			for(char c : elements.toLowerCase().toCharArray())
 			{
-				this.elements.add(Character.toString(c));
+				
+				if(c == ';')
+				{
+					this.elements.add(buffer);
+					buffer = "";
+				}
+				else
+				{
+					buffer = buffer.concat(Character.toString(c));
+				}
 			}
 		}
 		
@@ -705,6 +716,7 @@ public class SetOperationCalculator
 				if(elements2.elements.contains(element1))
 				{
 					buffer = buffer.concat(element1);
+					buffer = buffer.concat(";");
 				}
 			}
 			
@@ -715,11 +727,13 @@ public class SetOperationCalculator
 			for(String element1 : elements1.elements)
 			{
 				buffer = buffer.concat(element1);
+				buffer = buffer.concat(";");
 			}	
 			
 			for(String element2 : elements2.elements)
 			{
 				buffer = buffer.concat(element2);
+				buffer = buffer.concat(";");
 			}
 			
 			return new Token(buffer);
@@ -735,6 +749,7 @@ public class SetOperationCalculator
 				else
 				{
 					buffer = buffer.concat(element1);
+					buffer = buffer.concat(";");
 				}
 			}
 			
@@ -751,6 +766,7 @@ public class SetOperationCalculator
 				else
 				{
 					buffer = buffer.concat(element1);
+					buffer = buffer.concat(";");
 				}
 			}	
 			
@@ -763,6 +779,7 @@ public class SetOperationCalculator
 				else
 				{
 					buffer = buffer.concat(element2);
+					buffer = buffer.concat(";");
 				}
 			}
 			

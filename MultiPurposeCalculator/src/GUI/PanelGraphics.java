@@ -142,7 +142,7 @@ public class PanelGraphics
 	
 	private static JPanel drawingPanel;
 	private int panelWidth = 550;
-	private int panelHeight = 500;
+	private int panelHeight = 450;
     private static boolean draw3Circles;
     public static boolean isDraw3Circles() {return draw3Circles;}
     public static void setDraw3Circles(boolean bool) { draw3Circles = bool;};
@@ -214,7 +214,7 @@ public class PanelGraphics
 	
 	public JPanel getPanel() {return drawingPanel;}
 	
-	public void displayResult(String result)
+	public void drawResult(String result)
 	{
 		circleAreaResults.clear();
 		
@@ -305,6 +305,117 @@ public class PanelGraphics
 		}
 		
 		drawingPanel.repaint();
+	}
+	
+	public void drawResultFromDefinedSet(String result, String setU, String setA, String setB, String setC)
+	{
+		int setNumber = 1;
+		String areaToDraw = "";
+		String buffer = "";
+		ArrayList<String> setToParse = new ArrayList<String>();
+		ArrayList<String> resultElements = new ArrayList<String>();
+		ArrayList<String> setUElements = new ArrayList<String>();
+		ArrayList<String> setAElements = new ArrayList<String>();
+		ArrayList<String> setBElements = new ArrayList<String>();
+		ArrayList<String> setCElements = new ArrayList<String>();
+		
+		setToParse.add(result.toLowerCase());
+		setToParse.add(setU.toLowerCase());
+		setToParse.add(setA.toLowerCase());
+		setToParse.add(setB.toLowerCase());
+		setToParse.add(setC.toLowerCase());
+		
+		
+		for(String set : setToParse)
+		{
+			for(char c : set.toCharArray())
+			{
+				if(c == ';')
+				{
+					if(setNumber == 1)
+					{
+						resultElements.add(buffer);					
+					}
+					else if(setNumber == 2)
+					{
+						setUElements.add(buffer);					
+					}
+					else if(setNumber == 3)
+					{
+						setAElements.add(buffer);					
+					}
+					else if(setNumber == 4)
+					{
+						setBElements.add(buffer);					
+					}
+					else if(setNumber == 5)
+					{
+						setCElements.add(buffer);					
+					}
+					buffer = "";
+				}
+				else if(c != '{' && c != '}')
+				{
+					buffer = buffer.concat(Character.toString(c));
+				}				
+			}
+			
+			setNumber++;
+		}
+		
+		for(String element : resultElements)
+		{
+			if(setAElements.contains(element) && 
+			   !setBElements.contains(element) && 
+			   !setCElements.contains(element))
+			{
+				areaToDraw = areaToDraw.concat("1");
+			}
+			else if(setAElements.contains(element) &&
+					setBElements.contains(element) &&
+					!setCElements.contains(element))
+			{
+				areaToDraw = areaToDraw.concat("2");
+			}
+			else if(!setAElements.contains(element) &&
+					setBElements.contains(element) &&
+					!setCElements.contains(element))
+			{
+				areaToDraw = areaToDraw.concat("3");
+			}
+			else if(setAElements.contains(element) &&
+					!setBElements.contains(element) &&
+					setCElements.contains(element))
+			{
+				areaToDraw = areaToDraw.concat("4");
+			}
+			else if(!setAElements.contains(element) &&
+					!setBElements.contains(element) &&
+					setCElements.contains(element))
+			{
+				areaToDraw = areaToDraw.concat("5");
+			}
+			else if(!setAElements.contains(element) &&
+					setBElements.contains(element) &&
+					setCElements.contains(element))
+			{
+				areaToDraw = areaToDraw.concat("6");
+			}
+			else if(setAElements.contains(element) &&
+					setBElements.contains(element) &&
+					setCElements.contains(element))
+			{
+				areaToDraw = areaToDraw.concat("7");
+			}
+			else if(!setAElements.contains(element) &&
+					!setBElements.contains(element) &&
+					!setCElements.contains(element))
+			{
+				areaToDraw = areaToDraw.concat("8");
+			}
+		}
+		
+		drawResult(areaToDraw);
 	}
 	
 	public static String parseSelectedAreaResult()

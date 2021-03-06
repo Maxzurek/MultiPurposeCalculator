@@ -240,7 +240,7 @@ public class PanelCalculator
 		panelCalculator.add(backButton);
 		
 		circle2Rdbt = new JRadioButton("2 Circles");
-		circle2Rdbt.setBounds(750, 500, 90, 25);
+		circle2Rdbt.setBounds(750, 450, 90, 25);
 		circle2Rdbt.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent)
@@ -252,7 +252,7 @@ public class PanelCalculator
 		panelCalculator.add(circle2Rdbt);
 		
 		circle3Rdbt = new JRadioButton("3 Circles");
-		circle3Rdbt.setBounds(660, 500, 90, 25);
+		circle3Rdbt.setBounds(660, 450, 90, 25);
 		circle3Rdbt.setSelected(true);
 		circle3Rdbt.addActionListener(new ActionListener()
 		{
@@ -401,7 +401,7 @@ public class PanelCalculator
 							   								);
 					
 					resultTextPane.setText(result);
-					panelGraphics.displayResult(result);
+					panelGraphics.drawResult(result);
 				}
 			}
 			else
@@ -419,13 +419,15 @@ public class PanelCalculator
 				}
 				else
 				{
+					String regionToDraw = "";
 					result = setOperationCalculator.evaluate(
 															parsedExpression, 
 															SetElementsFrame.getSetElements("u"),
 															definedSet
 															);
 					resultTextPane.setText(result);
-					panelGraphics.displayResult(result);
+					regionToDraw = setOperationCalculator.evaluate(input, null, 0);
+					panelGraphics.drawResult(regionToDraw);
 				}
 			}
 			
@@ -467,7 +469,7 @@ public class PanelCalculator
 	
 	private boolean areSetsValid(String input)
 	{
-		String validSetNames = "abcdefghijklmnopqrstuvwxyz";
+		String validSetNames = "uabc";
 		
 		for(char c : input.toLowerCase().toCharArray())
 		{
@@ -489,7 +491,7 @@ public class PanelCalculator
 	
 	private String getParsedSetExpression(String input)
 	{
-		String validSetNames = "uabcdefghij";
+		String validSetNames = "uabc";
 		boolean setNameFound = false;
 		String parsedExpression = "";
 		
