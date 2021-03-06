@@ -252,7 +252,7 @@ public class PanelSetButtons
 		setButtonsPanel.add(buttonU);
 		
 		JButton buttonHelp = new JButton("Help?");
-		buttonHelp.setBounds(465, 54, 130, 30);
+		buttonHelp.setBounds(465, 22, 130, 30);
 		buttonHelp.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -261,17 +261,6 @@ public class PanelSetButtons
 			}
 		});
 		setButtonsPanel.add(buttonHelp);
-		
-		JButton setElementsButton = new JButton("Define Set");
-		setElementsButton.setBounds(465, 20, 130, 30);
-		setElementsButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent actionEvent) 
-			{ 
-				SetElementsFrame.displayFrame();
-			}
-		});
-		setButtonsPanel.add(setElementsButton);
 	}
 	
 	private void displaySetHelpFrame()

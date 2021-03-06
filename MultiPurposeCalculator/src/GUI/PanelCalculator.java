@@ -36,9 +36,8 @@ public class PanelCalculator
 	private JTextArea inputTextField;
 	private JTextArea resultTextPane;
 	private JButton equalButton;
-	@SuppressWarnings("rawtypes")
-	private JComboBox selectionComboBox;
-	private SetElementsFrame setElementsFrame = new SetElementsFrame();
+	private JComboBox<Object> selectionComboBox;
+	private PanelSetElements panelSetElements = new PanelSetElements();
 	private JToggleButton logicToggle;
 	private JToggleButton SetsToggle;
 	private JRadioButton circle3Rdbt;
@@ -72,7 +71,7 @@ public class PanelCalculator
 		panelLogicButtons.setupPanel(core, panelCalculator, inputTextField);
 		panelSetButtons.setupPanel(core, panelCalculator, inputTextField);	
 		panelGraphics.setupPanel(core, panelCalculator);
-		setElementsFrame.setupFrame(core);
+		panelSetElements.setupPanel(core, panelCalculator);
 	}
 	
 	public JLayeredPane getPanel() {return panelCalculator;}
@@ -246,6 +245,7 @@ public class PanelCalculator
 			public void actionPerformed(ActionEvent actionEvent)
 			{
 				PanelGraphics.setDraw3Circles(false);
+				PanelSetElements.setPanelComponent();
 				PanelGraphics.clearPaint();
 			}
 		});
@@ -259,6 +259,7 @@ public class PanelCalculator
 			public void actionPerformed(ActionEvent actionEvent)
 			{
 				PanelGraphics.setDraw3Circles(true);
+				PanelSetElements.setPanelComponent();
 				PanelGraphics.clearPaint();
 			}
 		});
@@ -368,49 +369,17 @@ public class PanelCalculator
 			
 			String parsedExpression;
 			String result;
-			int definedSet;
 			
-			definedSet= SetElementsFrame.getComboBoxIndex();
 			input = inputTextField.getText();
-			
-			if(input.length() == 0 && !PanelGraphics.isResultFromDrawing())
-			{
-				resultTextPane.setText("No expression to evaluate");
-				break;
-			}
 			
 			if(PanelGraphics.isResultFromDrawing())
 			{
-				//TODO method from SetOperationCalculator to get expression result
 				result = setOperationCalculator.evaluateFromDrawing(PanelGraphics.parseSelectedAreaResult());
 				resultTextPane.setText(result);
 				PanelGraphics.setResultFromDrawing(false);
 			}
-			else if(definedSet == 0)
+			else if(PanelSetElements.areSetsDefined())
 			{
-				if(!setOperationCalculator.isValidInput(input))
-				{
-					resultTextPane.setText("Invalid Input!");
-				}
-				else
-				{
-					result = setOperationCalculator.evaluate(
-															input, 
-															SetElementsFrame.getSetElements("u"),
-															definedSet
-							   								);
-					
-					resultTextPane.setText(result);
-					panelGraphics.drawResult(result);
-				}
-			}
-			else
-			{
-				if(!areSetsValid(input))
-				{
-					break;		
-				}
-				
 				parsedExpression = getParsedSetExpression(input);
 				
 				if(!setOperationCalculator.isValidInput(parsedExpression))
@@ -420,15 +389,29 @@ public class PanelCalculator
 				else
 				{
 					String regionToDraw = "";
-					result = setOperationCalculator.evaluate(
-															parsedExpression, 
-															SetElementsFrame.getSetElements("u"),
-															definedSet
-															);
+					result = setOperationCalculator.evaluate(parsedExpression, PanelSetElements.getSetElements("u"));
 					resultTextPane.setText(result);
-					regionToDraw = setOperationCalculator.evaluate(input, null, 0);
+					regionToDraw = setOperationCalculator.evaluate(input, null);
 					panelGraphics.drawResult(regionToDraw);
+				}						
+			}
+			else if(input.length() != 0)
+			{
+				if(!setOperationCalculator.isValidInput(input))
+				{
+					resultTextPane.setText("Invalid Input!");
 				}
+				else
+				{
+					result = setOperationCalculator.evaluate(input, PanelSetElements.getSetElements("u"));
+					
+					resultTextPane.setText(result);
+					panelGraphics.drawResult(result);
+				}			
+			}
+			else
+			{
+				resultTextPane.setText("No expression to evaluate");
 			}
 			
 			if(PanelGraphics.isDraw3Circles())
@@ -439,6 +422,7 @@ public class PanelCalculator
 			{
 				circle2Rdbt.setSelected(true);
 			}
+			
 			break;
 			
 		default:
@@ -467,31 +451,9 @@ public class PanelCalculator
 		}
 	}
 	
-	private boolean areSetsValid(String input)
-	{
-		String validSetNames = "uabc";
-		
-		for(char c : input.toLowerCase().toCharArray())
-		{
-			for(char validChar : validSetNames.toCharArray())
-			{
-				if(c == validChar)
-				{
-					if(SetElementsFrame.getSetElements(Character.toString(c)) == null)
-					{
-						resultTextPane.setText("Set name '" + c + "' does not exist!");
-						return false;
-					}
-				}
-			}
-		}
-		
-		return true;
-	}
-	
 	private String getParsedSetExpression(String input)
 	{
-		String validSetNames = "uabc";
+		String validSetNames = "UABC";
 		boolean setNameFound = false;
 		String parsedExpression = "";
 		
@@ -501,7 +463,7 @@ public class PanelCalculator
 			{
 				if(c == validName)
 				{
-					parsedExpression = parsedExpression.concat(SetElementsFrame.getSetElements(Character.toString(c)));
+					parsedExpression = parsedExpression.concat(PanelSetElements.getSetElements(Character.toString(c)));
 						
 					setNameFound = true;	
 				}

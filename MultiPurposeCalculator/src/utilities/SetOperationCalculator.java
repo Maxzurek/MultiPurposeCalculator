@@ -1,5 +1,6 @@
 package utilities;
 
+
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.LinkedHashSet;
@@ -8,6 +9,7 @@ import java.util.Stack;
 import java.util.TreeSet;
 
 import GUI.PanelGraphics;
+import GUI.PanelSetElements;
 
 public class SetOperationCalculator 
 {	
@@ -89,7 +91,7 @@ public class SetOperationCalculator
 		}
 	}
 	
-	public String evaluate(String input, String universalSet, int definedSet)
+	public String evaluate(String input, String universalSet)
 	{
 		ArrayList<Token> expression = new ArrayList<Token>();
 		ArrayList<Token> universalElements = new ArrayList<Token>();
@@ -99,16 +101,9 @@ public class SetOperationCalculator
 			toArrayList(universalSet.toLowerCase(), universalElements);
 		}
 		
-		if(definedSet == 0 && drawingRequired(input))
+		if(!PanelSetElements.areSetsDefined() && drawingRequired(input))
 		{
-			if(parseExpressionToDraw(input, expression, universalElements))
-			{
-				PanelGraphics.setDraw3Circles(true);
-			}
-			else
-			{
-				PanelGraphics.setDraw3Circles(false);
-			}
+			parseExpressionToDraw(input, expression, universalElements);
 		}
 		else
 		{
@@ -130,6 +125,21 @@ public class SetOperationCalculator
 		}
 		
 		return true;
+	}
+	
+	private boolean isValidChar(char c)
+	{
+		String validChars = "abcdefghijklmnopqrstuvwxyz0123456789(){};,∈=⊆⊂'\\∩∪∆ ";
+		
+		for(char validChar : validChars.toCharArray())
+		{
+			if(c == validChar)
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public String evaluateFromDrawing(String result)
@@ -178,6 +188,16 @@ public class SetOperationCalculator
 		}
 		
 		tempSets.addAll(sets);
+		
+		//CUSTOM (A∪B∪C)∆(A∩B)∆(A∩C)∆(B∩C)
+		stringExpression = "(A∪B∪C)∆(A∩B)∆(A∩C)∆(B∩C)";
+		parseExpressionToDraw(stringExpression, expression, universalExpression);
+		expressionResult = getResult(expression, universalExpression);
+		if(expressionResult.equals(result))
+		{
+			return getStringExpression(expression);
+		}
+		expression.clear();
 		
 		//A'
 		stringExpression = "A'";
@@ -237,6 +257,7 @@ public class SetOperationCalculator
 		sets.addAll(tempSets);
 		tempSets.clear();
 		
+		//(X?Y)?(X?Y)
 		for(String operator : operators)
 		{
 			for(String set1 : sets)
@@ -260,6 +281,10 @@ public class SetOperationCalculator
 		sets.addAll(tempSets);
 		tempSets.clear();
 		
+		long timestamp = System.currentTimeMillis();
+		long elapsedTime = 0;
+		
+		//(X?Y)?(X?Y)?(X?Y)
 		for(String operator1 : operators)
 		{
 			for(String operator2 : operators)
@@ -270,11 +295,19 @@ public class SetOperationCalculator
 					{
 						for(String set3 : complexSets)
 						{
+							elapsedTime = System.currentTimeMillis() - timestamp;
+							if(elapsedTime == 20000)
+							{
+								return "Thread Exception"
+										+ "\n-Operation stopped after 20 seconds."
+										+ "\nCouldn't find result for "+result;
+							}
+							
 							stringExpression = set1+operator1+set2+operator2+set3;
 							tempSets.add(stringExpression);
 							parseExpressionToDraw(stringExpression, expression, universalExpression);
 							expressionResult = getResult(expression, universalExpression);
-							if(expressionResult.equals(result) && expression.size() <= 17)
+							if(expressionResult.equals(result) /*&& expression.size() <= 17*/)
 							{
 								return getStringExpression(expression);
 							}
@@ -320,55 +353,18 @@ public class SetOperationCalculator
 		return true;
 	}
 	
-	private boolean isValidChar(char c)
-	{
-		String validChars = "abcdefghijklmnopqrstuvwxyz0123456789(){};,∈=⊆⊂'\\∩∪∆ ";
-		
-		for(char validChar : validChars.toCharArray())
-		{
-			if(c == validChar)
-			{
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	private boolean parseExpressionToDraw(
+	private void parseExpressionToDraw(
 			String input, 
 			ArrayList<Token> expression, 
 			ArrayList<Token> universalElements
 			)
 	{
-		boolean draw3Circles = false;
-		boolean isSetC = false;
-		Set<Character> uniqueSetName = new LinkedHashSet<Character>();
 		Set<String> elementsA = new LinkedHashSet<String>();
 		Set<String> elementsB = new LinkedHashSet<String>();
 		Set<String> elementsC = new LinkedHashSet<String>();
 		Set<String> elementsU = new LinkedHashSet<String>();
 		
-		//Count number of unique set
-		for(char c : input.toLowerCase().toCharArray())
-		{
-			if(c == 'a')
-			{
-				uniqueSetName.add(c);
-				
-			}
-			else if(c == 'b')
-			{
-				uniqueSetName.add(c);
-			}
-			else if(c == 'c')
-			{
-				isSetC = true;
-				uniqueSetName.add(c);
-			}
-		}
-		
-		if(uniqueSetName.size() == 3 || isSetC || PanelGraphics.isDraw3Circles())
+		if(PanelGraphics.isDraw3Circles())
 		{
 			elementsA.add("1");elementsA.add("2");elementsA.add("4");elementsA.add("7");
 			
@@ -379,8 +375,6 @@ public class SetOperationCalculator
 			elementsU.add("1");elementsU.add("2");elementsU.add("3");elementsU.add("4");
 			elementsU.add("5");elementsU.add("6");elementsU.add("7");elementsU.add("8");
 			universalElements.add(new Token(elementsU));
-			
-			draw3Circles = true;
 		}
 		else
 		{
@@ -413,8 +407,6 @@ public class SetOperationCalculator
 				expression.add(new Token(Character.toString(c), true));
 			}
 		}
-		
-		return draw3Circles;
 	}
 	
 	private void toArrayList(String input, ArrayList<Token> expression)
