@@ -12,7 +12,7 @@ public class Core
 	private Menu menu;
 	private PanelContainer panelContainer;
 	private static FileWriter myWriter;
-	private static String version = "7.0";
+	private static String version = "7.1";
 
 	/**
 	 * Launch the application.

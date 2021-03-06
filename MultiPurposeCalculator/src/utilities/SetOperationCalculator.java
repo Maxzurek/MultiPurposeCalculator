@@ -15,9 +15,10 @@ public class SetOperationCalculator
 	{
 		String setName = "";
 		String operator = "";
-		boolean isBoolean = false;
 		String booleanString = "";
+		boolean isBoolean = false;
 		boolean isOperator = false;
+		boolean isComplement = false;
 		Set<String> elements = new TreeSet<String>();
 		
 		Token(){}								//Default constructor
@@ -122,741 +123,156 @@ public class SetOperationCalculator
 	
 	public String evaluateFromDrawing(String result)
 	{
-		String expressionResult = "";
 		boolean is3Circles = PanelGraphics.isDraw3Circles();
-		ArrayList<Token> operatorSet = new ArrayList<Token>();
-		ArrayList<Token> universalExpression = new ArrayList<Token>();
+		String stringExpression;
+		String expressionResult = "";
+		ArrayList<String> operators = new ArrayList<String>();
+		ArrayList<String> sets = new ArrayList<String>();
+		ArrayList<String> complexSets = new ArrayList<String>();
+		ArrayList<String> tempSets = new ArrayList<String>();
 		ArrayList<Token> expression = new ArrayList<Token>();
-		Set<String> elementsA = new LinkedHashSet<String>();
-		Set<String> elementsB = new LinkedHashSet<String>();
-		Set<String> elementsC = new LinkedHashSet<String>();
 		Set<String> elementsU = new LinkedHashSet<String>();
-		Token setA;
-		Token setB;
-		Token setC = null;
-		Token setU;
-		Token openParen = new Token("(", true);
-		Token closeParen = new Token(")", true);
-		Token complement = new Token("'", true);
-		Token union = new Token("∪", true);
-		Token intersection = new Token("∩", true);
-		Token symetricalDiff = new Token("∆", true);
-		Token difference = new Token("\\", true);
-		
-		
-		operatorSet.add(union);
-		operatorSet.add(intersection);
-		operatorSet.add(symetricalDiff);
-		operatorSet.add(difference);		
-		operatorSet.add(complement);
+		ArrayList<Token> universalExpression = new ArrayList<Token>();
+		Token setU;	
 		
 		if(is3Circles)
 		{
-			elementsA.add("1");elementsA.add("2");elementsA.add("3");elementsA.add("4");
-			setA = new Token(elementsA, "A");
-			
-			elementsB.add("2");elementsB.add("3");elementsB.add("6");elementsB.add("7");
-			setB = new Token(elementsB, "B");
-			
-			elementsC.add("3");elementsC.add("4");elementsC.add("5");elementsC.add("6");
-			setC = new Token(elementsC, "C");
-			
 			elementsU.add("1");elementsU.add("2");elementsU.add("3");elementsU.add("4");
 			elementsU.add("5");elementsU.add("6");elementsU.add("7");elementsU.add("8");
 			setU = new Token(elementsU, "U");
 			universalExpression.add(setU);
 		}
 		else
-		{
-			elementsA.add("1");elementsA.add("2");
-			setA = new Token(elementsA, "A");
-			
-			elementsB.add("2");elementsB.add("3");
-			setB = new Token(elementsB, "B");
-			
+		{			
 			elementsU.add("1");elementsU.add("2");elementsU.add("3");elementsU.add("4");
 			setU = new Token(elementsU, "U");
 			universalExpression.add(setU);
 		}
 		
-		for(Token operator : operatorSet)
-		{
-			//U
-			expression.add(setU);
-			expressionResult = getResult(universalExpression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//A'
-			expression.add(setA);expression.add(complement);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//B'
-			expression.add(setB);expression.add(complement);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//A?B
-			expression.add(setA);expression.add(operator);expression.add(setB);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//B?A
-			expression.add(setB);expression.add(operator);expression.add(setB);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//A'?B
-			expression.add(setA);expression.add(complement);expression.add(operator);expression.add(setB);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//A?B'
-			expression.add(setA);expression.add(operator);expression.add(setB);expression.add(complement);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//B'?A
-			expression.add(setB);expression.add(complement);expression.add(operator);expression.add(setA);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//B?A'
-			expression.add(setB);expression.add(operator);expression.add(setA);expression.add(complement);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//B?A'
-			expression.add(setB);expression.add(operator);expression.add(setA);expression.add(complement);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-			//(A?B)'
-			expression.add(openParen);
-			expression.add(setA);expression.add(operator);expression.add(setB);
-			expression.add(closeParen);expression.add(complement);
-			expressionResult = getResult(expression, universalExpression);
-			if(expressionResult.equals(result))
-			{
-				return getStringExpression(expression);
-			}
-			expression.clear();
-		}		
+		operators.add("∪");
+		operators.add("∩");
+		operators.add("∆");
+		operators.add("\\");
+		operators.add("'");
+		
+		sets.add("A");
+		sets.add("B");
+		sets.add("A'");
+		sets.add("B'");
 		
 		if(is3Circles)
 		{
-			for(Token operator : operatorSet)
-			{
-				//A?C
-				expression.add(setA);expression.add(operator);expression.add(setC);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//C?A
-				expression.add(setC);expression.add(operator);expression.add(setA);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//B?C
-				expression.add(setB);expression.add(operator);expression.add(setC);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//C?B
-				expression.add(setC);expression.add(operator);expression.add(setB);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//A'?C
-				expression.add(setA);expression.add(complement);expression.add(operator);expression.add(setC);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//A?C'
-				expression.add(setA);expression.add(operator);expression.add(setC);expression.add(complement);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//C'?A
-				expression.add(setC);expression.add(complement);expression.add(operator);expression.add(setA);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//C?A'
-				expression.add(setC);expression.add(operator);expression.add(setA);expression.add(complement);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//A'?C'
-				expression.add(setA);expression.add(complement);expression.add(setC);expression.add(complement);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//C'?A'
-				expression.add(setC);expression.add(complement);expression.add(setA);expression.add(complement);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//B'?C'
-				expression.add(setB);expression.add(complement);expression.add(setC);expression.add(complement);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//C'?B'
-				expression.add(setC);expression.add(complement);expression.add(setB);expression.add(complement);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//(A?C)'
-				expression.add(openParen);
-				expression.add(setA);expression.add(operator);expression.add(setC);
-				expression.add(closeParen);expression.add(complement);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-				//(B?C)'
-				expression.add(openParen);
-				expression.add(setB);expression.add(operator);expression.add(setC);
-				expression.add(closeParen);expression.add(complement);
-				expressionResult = getResult(expression, universalExpression);
-				if(expressionResult.equals(result))
-				{
-					return getStringExpression(expression);
-				}
-				expression.clear();
-			}
-			
-			for(Token operator1 : operatorSet)
-			{
-				for(Token operator2 : operatorSet)
-				{
-					//A?(B?C)
-					expression.add(setA);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?(C?B)
-					expression.add(setA);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setC);expression.add(operator2);expression.add(setB);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//B?(A?C)
-					expression.add(setB);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setA);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//B?(C?A)
-					expression.add(setB);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setC);expression.add(operator2);expression.add(setA);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//C?(A?B)
-					expression.add(setC);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setA);expression.add(operator2);expression.add(setB);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//C?(B?A)
-					expression.add(setC);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator2);expression.add(setA);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(C?B)?A
-					expression.add(openParen);
-					expression.add(setC);expression.add(operator1);expression.add(setB);
-					expression.add(closeParen);
-					expression.add(operator2);expression.add(setA);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(B?C)?A
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator1);expression.add(setC);
-					expression.add(closeParen);
-					expression.add(operator2);expression.add(setA);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(C?A)?B
-					expression.add(openParen);
-					expression.add(setC);expression.add(operator1);expression.add(setA);
-					expression.add(closeParen);
-					expression.add(operator2);expression.add(setB);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A?C)?B
-					expression.add(openParen);
-					expression.add(setA);expression.add(operator1);expression.add(setC);
-					expression.add(closeParen);
-					expression.add(operator2);expression.add(setB);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(B?A)?C
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator1);expression.add(setA);
-					expression.add(closeParen);
-					expression.add(operator2);expression.add(setC);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A?B)?C
-					expression.add(openParen);
-					expression.add(setA);expression.add(operator1);expression.add(setB);
-					expression.add(closeParen);
-					expression.add(operator2);expression.add(setC);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A'?(B?C)
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?(B'?C)
-					expression.add(setA);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(complement);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					expression.clear();
-					//A?(B?C')
-					expression.add(setA);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator2);expression.add(setC);expression.add(complement);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?(B?C)'
-					expression.add(setA);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A'?(B'?C)
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(complement);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A'?(B?C')
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator2);expression.add(setC);expression.add(complement);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A'?(B?C)'
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?(B'?C')
-					expression.add(setA);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(complement);expression.add(operator2);
-					expression.add(setC);expression.add(complement);
-					expression.add(closeParen);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?(B'?C)'
-					expression.add(setA);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(complement);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?(B?C')'
-					expression.add(setA);expression.add(operator1);
-					expression.add(openParen);
-					expression.add(setB);expression.add(operator2);expression.add(setC);expression.add(complement);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-				}
-			}//End of for loop
-					
-			/*
-			 * 
-			 * Less desired expression result, do LAST
-			 * 
-			 */
-			for(Token operator1 : operatorSet)
-			{
-				for(Token operator2 : operatorSet)
-				{
-					//A?B?C
-					expression.add(setA);expression.add(operator1);expression.add(setB);
-					expression.add(operator2);expression.add(setC);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?C?B
-					expression.add(setA);expression.add(operator1);expression.add(setC);
-					expression.add(operator2);expression.add(setB);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//B?A?C
-					expression.add(setB);expression.add(operator1);expression.add(setA);
-					expression.add(operator2);expression.add(setC);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//B?C?A
-					expression.add(setB);expression.add(operator1);expression.add(setC);
-					expression.add(operator2);expression.add(setA);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//C?A?B
-					expression.add(setC);expression.add(operator1);expression.add(setA);
-					expression.add(operator2);expression.add(setB);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//C?B?A
-					expression.add(setC);expression.add(operator1);expression.add(setB);
-					expression.add(operator2);expression.add(setA);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//C?B?A
-					expression.add(setC);expression.add(operator1);expression.add(setB);
-					expression.add(operator2);expression.add(setA);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A'?B?C
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(setB);expression.add(operator2);expression.add(setC);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?B'?C
-					expression.add(setA);expression.add(operator1);expression.add(setB);
-					expression.add(complement);expression.add(operator2);expression.add(setC);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//A?B?C'
-					expression.add(setA);expression.add(operator1);expression.add(setB);
-					expression.add(operator2);expression.add(setC);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A?B?C)'
-					expression.add(openParen);
-					expression.add(setA);expression.add(operator1);expression.add(setB);
-					expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A'?B?C)'
-					expression.add(openParen);
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(setB);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A?B'?C)'
-					expression.add(openParen);
-					expression.add(setA);expression.add(operator1);expression.add(setB);
-					expression.add(complement);expression.add(operator2);expression.add(setC);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A?B?C')'
-					expression.add(openParen);
-					expression.add(setA);expression.add(operator1);expression.add(setB);
-					expression.add(operator2);expression.add(setC);expression.add(complement);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A'?B'?C)'
-					expression.add(openParen);
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(setB);expression.add(complement);expression.add(operator2);
-					expression.add(setC);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A'?B?C')'
-					expression.add(openParen);
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(setB);expression.add(operator2);expression.add(setC);
-					expression.add(complement);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A?B'?C')'
-					expression.add(openParen);
-					expression.add(setA);expression.add(operator1);expression.add(setB);
-					expression.add(complement);expression.add(operator2);expression.add(setC);
-					expression.add(complement);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-					//(A'?B'?C')'
-					expression.add(openParen);
-					expression.add(setA);expression.add(complement);expression.add(operator1);
-					expression.add(setB);expression.add(complement);expression.add(operator2);
-					expression.add(setC);expression.add(complement);
-					expression.add(closeParen);expression.add(complement);
-					expressionResult = getResult(expression, universalExpression);
-					if(expressionResult.equals(result))
-					{
-						return getStringExpression(expression);
-					}
-					expression.clear();
-				}
-			}//End of For Loop
-			
-			//Custom expression finder
-			expression.add(openParen);
-			expression.add(setA);expression.add(intersection);expression.add(setB);
-			expression.add(closeParen);expression.add(union);
-			expression.add(openParen);
-			expression.add(setA);expression.add(intersection);expression.add(setC);
-			expression.add(closeParen);expression.add(union);
-			expression.add(openParen);
-			expression.add(setB);expression.add(intersection);expression.add(setC);
-			expression.add(closeParen);
+			sets.add("C");
+			sets.add("C'");			
+		}
+		
+		tempSets.addAll(sets);
+		
+		//A'
+		stringExpression = "A'";
+		parseExpressionToDraw(stringExpression, expression, universalExpression);
+		expressionResult = getResult(expression, universalExpression);
+		if(expressionResult.equals(result))
+		{
+			return getStringExpression(expression);
+		}
+		expression.clear();
+		//B'
+		stringExpression = "B'";
+		parseExpressionToDraw(stringExpression, expression, universalExpression);
+		expressionResult = getResult(expression, universalExpression);
+		if(expressionResult.equals(result))
+		{
+			return getStringExpression(expression);
+		}
+		expression.clear();
+		
+		if(is3Circles)
+		{
+			//C'
+			stringExpression = "C'";
+			parseExpressionToDraw(stringExpression, expression, universalExpression);
 			expressionResult = getResult(expression, universalExpression);
 			if(expressionResult.equals(result))
 			{
 				return getStringExpression(expression);
 			}
-			expression.clear();
-		}//End if
+			expression.clear();		
+		}
+		
+		
+		//X?Y
+		for(String operator: operators)
+		{			
+			for(String set1 : sets)
+			{
+				for(String set2 : sets)
+				{
+					stringExpression = "(" + set1 + operator + set2 + ")";
+					tempSets.add(stringExpression);
+					complexSets.add(stringExpression);
+					parseExpressionToDraw(stringExpression, expression, universalExpression);
+					expressionResult = getResult(expression, universalExpression);
+					if(expressionResult.equals(result))
+					{
+						return getStringExpression(expression);
+					}
+					expression.clear();
+				}
+			}
+		}
+		
+		sets.clear();
+		sets.addAll(tempSets);
+		tempSets.clear();
+		
+		for(String operator : operators)
+		{
+			for(String set1 : sets)
+			{
+				for(String set2 : sets)
+				{
+					stringExpression = set1+operator+set2;
+					tempSets.add(stringExpression);
+					parseExpressionToDraw(stringExpression, expression, universalExpression);
+					expressionResult = getResult(expression, universalExpression);
+					if(expressionResult.equals(result))
+					{
+						return getStringExpression(expression);
+					}
+					expression.clear();
+				}
+			}
+		}
+		
+		sets.clear();
+		sets.addAll(tempSets);
+		tempSets.clear();
+		
+		for(String operator1 : operators)
+		{
+			for(String operator2 : operators)
+			{
+				for(String set1 : complexSets)
+				{
+					for(String set2 : complexSets)
+					{
+						for(String set3 : complexSets)
+						{
+							stringExpression = set1+operator1+set2+operator2+set3;
+							tempSets.add(stringExpression);
+							parseExpressionToDraw(stringExpression, expression, universalExpression);
+							expressionResult = getResult(expression, universalExpression);
+							if(expressionResult.equals(result) && expression.size() <= 17)
+							{
+								return getStringExpression(expression);
+							}
+							expression.clear();
+						}					
+					}
+				}				
+			}
+		}
 		
 		return "Couldn't find result for "+result;
 	}
@@ -941,13 +357,13 @@ public class SetOperationCalculator
 			}
 		}
 		
-		if(uniqueSetName.size() == 3 || isSetC)
+		if(uniqueSetName.size() == 3 || isSetC || PanelGraphics.isDraw3Circles())
 		{
-			elementsA.add("1");elementsA.add("2");elementsA.add("3");elementsA.add("4");
+			elementsA.add("1");elementsA.add("2");elementsA.add("4");elementsA.add("7");
 			
-			elementsB.add("2");elementsB.add("3");elementsB.add("6");elementsB.add("7");
+			elementsB.add("2");elementsB.add("3");elementsB.add("7");elementsB.add("6");
 			
-			elementsC.add("3");elementsC.add("4");elementsC.add("5");elementsC.add("6");
+			elementsC.add("4");elementsC.add("5");elementsC.add("6");elementsC.add("7");
 			
 			elementsU.add("1");elementsU.add("2");elementsU.add("3");elementsU.add("4");
 			elementsU.add("5");elementsU.add("6");elementsU.add("7");elementsU.add("8");
@@ -962,7 +378,7 @@ public class SetOperationCalculator
 			elementsB.add("2");elementsB.add("3");
 			
 			elementsU.add("1");elementsU.add("2");elementsU.add("3");elementsU.add("4");
-			universalElements.add(new Token(elementsU));
+			universalElements.add(new Token(elementsU, "U"));
 		}
 		
 		//Parse expression after we know how many set we have
@@ -970,16 +386,16 @@ public class SetOperationCalculator
 		{
 			if(c == 'a')
 			{
-				expression.add(new Token(elementsA));
+				expression.add(new Token(elementsA, "A"));
 				
 			}
 			else if(c == 'b')
 			{
-				expression.add(new Token(elementsB));
+				expression.add(new Token(elementsB, "B"));
 			}
 			else if(c == 'c')
 			{
-				expression.add(new Token(elementsC));
+				expression.add(new Token(elementsC, "C"));
 			}
 			else if(isOperator(c))
 			{
@@ -1114,7 +530,7 @@ public class SetOperationCalculator
 					
 					operators.pop();	
 				}
-				else if(token.operator.contentEquals("'"))
+				else if(token.operator.contentEquals("'") || token.isComplement)
 				{
 					if(universalElements.get(0) == null)
 					{
