@@ -44,7 +44,7 @@ public class PanelSetButtons
 		JButton elementButton = new JButton("∈");
 		elementButton.setMargin(new Insets(0, 0, 0, 0));
 		elementButton.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		elementButton.setBounds(145, 20, 45, 30);
+		elementButton.setBounds(160, 20, 50, 30);
 		elementButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -58,7 +58,7 @@ public class PanelSetButtons
 		JButton buttonEqual = new JButton("=");
 		buttonEqual.setMargin(new Insets(0, 0, 0, 0));
 		buttonEqual.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonEqual.setBounds(145, 52, 45, 30);
+		buttonEqual.setBounds(160, 50, 50, 30);
 		buttonEqual.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -72,7 +72,7 @@ public class PanelSetButtons
 		JButton buttonInclusion = new JButton("⊆");
 		buttonInclusion.setMargin(new Insets(0, 0, 0, 0));
 		buttonInclusion.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonInclusion.setBounds(190, 20, 45, 30);
+		buttonInclusion.setBounds(210, 20, 50, 30);
 		buttonInclusion.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -86,7 +86,7 @@ public class PanelSetButtons
 		JButton buttonStrictInclusion = new JButton("⊂");
 		buttonStrictInclusion.setMargin(new Insets(0, 0, 0, 0));
 		buttonStrictInclusion.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonStrictInclusion.setBounds(235, 20, 45, 30);
+		buttonStrictInclusion.setBounds(260, 20, 50, 30);
 		buttonStrictInclusion.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -100,7 +100,7 @@ public class PanelSetButtons
 		JButton buttonComplement = new JButton("'");
 		buttonComplement.setMargin(new Insets(0, 0, 0, 0));
 		buttonComplement.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonComplement.setBounds(145, 84, 45, 30);
+		buttonComplement.setBounds(160, 80, 50, 30);
 		buttonComplement.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -114,7 +114,7 @@ public class PanelSetButtons
 		JButton buttonIntersection = new JButton("∩");
 		buttonIntersection.setMargin(new Insets(0, 0, 0, 0));
 		buttonIntersection.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonIntersection.setBounds(235, 52, 45, 30);
+		buttonIntersection.setBounds(260, 50, 50, 30);
 		buttonIntersection.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -128,7 +128,7 @@ public class PanelSetButtons
 		JButton buttonUnion = new JButton("∪");
 		buttonUnion.setMargin(new Insets(0, 0, 0, 0));
 		buttonUnion.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonUnion.setBounds(190, 52, 45, 30);
+		buttonUnion.setBounds(210, 50, 50, 30);
 		buttonUnion.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -142,7 +142,7 @@ public class PanelSetButtons
 		JButton buttonDifference = new JButton("\\");
 		buttonDifference.setMargin(new Insets(0, 0, 0, 0));
 		buttonDifference.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonDifference.setBounds(190, 84, 45, 30);
+		buttonDifference.setBounds(210, 80, 50, 30);
 		buttonDifference.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -156,7 +156,7 @@ public class PanelSetButtons
 		JButton buttonSymetricalDiff = new JButton("∆");
 		buttonSymetricalDiff.setMargin(new Insets(0, 0, 0, 0));
 		buttonSymetricalDiff.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonSymetricalDiff.setBounds(235, 84, 45, 30);
+		buttonSymetricalDiff.setBounds(260, 80, 50, 30);
 		buttonSymetricalDiff.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -170,7 +170,7 @@ public class PanelSetButtons
 		JButton buttonOpen = new JButton("(");
 		buttonOpen.setMargin(new Insets(0, 0, 0, 0));
 		buttonOpen.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonOpen.setBounds(0, 52, 45, 30);
+		buttonOpen.setBounds(0, 50, 50, 30);
 		buttonOpen.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -184,7 +184,7 @@ public class PanelSetButtons
 		JButton buttonClose = new JButton(")");
 		buttonClose.setMargin(new Insets(0, 0, 0, 0));
 		buttonClose.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonClose.setBounds(90, 52, 45, 30);
+		buttonClose.setBounds(100, 50, 50, 30);
 		buttonClose.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -198,7 +198,7 @@ public class PanelSetButtons
 		JButton buttonA = new JButton("A");
 		buttonA.setMargin(new Insets(0, 0, 0, 0));
 		buttonA.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonA.setBounds(0, 20, 45, 30);
+		buttonA.setBounds(0, 20, 50, 30);
 		buttonA.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -212,7 +212,7 @@ public class PanelSetButtons
 		JButton buttonB = new JButton("B");
 		buttonB.setMargin(new Insets(0, 0, 0, 0));
 		buttonB.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonB.setBounds(45, 20, 45, 30);
+		buttonB.setBounds(50, 20, 50, 30);
 		buttonB.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -226,7 +226,7 @@ public class PanelSetButtons
 		JButton buttonC = new JButton("C");
 		buttonC.setMargin(new Insets(0, 0, 0, 0));
 		buttonC.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonC.setBounds(90, 20, 45, 30);
+		buttonC.setBounds(100, 20, 50, 30);
 		buttonC.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -239,8 +239,8 @@ public class PanelSetButtons
 		
 		JButton buttonU = new JButton("U");
 		buttonU.setMargin(new Insets(0, 0, 0, 0));
-		buttonU.setFont(new Font("DejaVu Sans Condensed", Font.BOLD, 18));
-		buttonU.setBounds(45, 52, 45, 30);
+		buttonU.setFont(new Font("Engravers MT", Font.ITALIC, 18));
+		buttonU.setBounds(50, 50, 50, 30);
 		buttonU.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent actionEvent) 
@@ -252,7 +252,7 @@ public class PanelSetButtons
 		setButtonsPanel.add(buttonU);
 		
 		JButton buttonHelp = new JButton("Help?");
-		buttonHelp.setBounds(465, 22, 130, 30);
+		buttonHelp.setBounds(475, 22, 130, 30);
 		buttonHelp.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 

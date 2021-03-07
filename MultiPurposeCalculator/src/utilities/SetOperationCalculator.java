@@ -1,15 +1,12 @@
 package utilities;
 
-
 import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 
 import GUI.PanelGraphics;
-import GUI.PanelSetElements;
 
 public class SetOperationCalculator 
 {	
@@ -21,7 +18,7 @@ public class SetOperationCalculator
 		boolean isBoolean = false;
 		boolean isOperator = false;
 		boolean isComplement = false;
-		Set<String> elements = new TreeSet<String>();
+		ArrayList<String> elements = new ArrayList<String>();
 		
 		Token(){}								//Default constructor
 		
@@ -44,7 +41,7 @@ public class SetOperationCalculator
 			}
 		}
 		
-		Token(Set<String> elements)
+		Token(ArrayList<String> elements)
 		{
 			for(String string : elements)
 			{
@@ -52,7 +49,7 @@ public class SetOperationCalculator
 			}
 		}
 		
-		Token(Set<String> elements, String setName)
+		Token(ArrayList<String> elements, String setName)
 		{
 			this.setName = setName;
 			for(String string : elements)
@@ -70,6 +67,7 @@ public class SetOperationCalculator
 		String elementsToString()
 		{
 			StringBuilder elements = new StringBuilder();
+			Set<String> uniqueElements = new TreeSet<String>();
 			
 			if(this.isBoolean)
 			{
@@ -80,8 +78,13 @@ public class SetOperationCalculator
 			
 			for(String s : this.elements)
 			{
+				uniqueElements.add(s);
+			}
+			
+			for(String s : uniqueElements)
+			{
 				elements = elements.append(s);
-				elements = elements.append(";");
+				elements = elements.append(";");			
 			}
 			
 			elements = elements.deleteCharAt(elements.length() -1);
@@ -101,7 +104,7 @@ public class SetOperationCalculator
 			toArrayList(universalSet.toLowerCase(), universalElements);
 		}
 		
-		if(!PanelSetElements.areSetsDefined() && drawingRequired(input))
+		if(drawingRequired(input))
 		{
 			parseExpressionToDraw(input, expression, universalElements);
 		}
@@ -149,10 +152,11 @@ public class SetOperationCalculator
 		String expressionResult = "";
 		ArrayList<String> operators = new ArrayList<String>();
 		ArrayList<String> sets = new ArrayList<String>();
-		ArrayList<String> complexSets = new ArrayList<String>();
+		ArrayList<String> uniqueSets = new ArrayList<String>();
+		ArrayList<String> dualSets = new ArrayList<String>();
 		ArrayList<String> tempSets = new ArrayList<String>();
 		ArrayList<Token> expression = new ArrayList<Token>();
-		Set<String> elementsU = new LinkedHashSet<String>();
+		ArrayList<String> elementsU = new ArrayList<String>();
 		ArrayList<Token> universalExpression = new ArrayList<Token>();
 		Token setU;	
 		
@@ -172,25 +176,30 @@ public class SetOperationCalculator
 		
 		operators.add("∪");
 		operators.add("∩");
-		operators.add("∆");
 		operators.add("\\");
+		operators.add("∆");
 		operators.add("'");
 		
 		sets.add("A");
 		sets.add("B");
 		sets.add("A'");
 		sets.add("B'");
-		
+		uniqueSets.add("A");
+		uniqueSets.add("B");
+		uniqueSets.add("A'");
+		uniqueSets.add("B'");
 		if(is3Circles)
 		{
 			sets.add("C");
 			sets.add("C'");			
+			uniqueSets.add("C");
+			uniqueSets.add("C'");
 		}
 		
 		tempSets.addAll(sets);
 		
-		//CUSTOM (A∪B∪C)∆(A∩B)∆(A∩C)∆(B∩C)
-		stringExpression = "(A∪B∪C)∆(A∩B)∆(A∩C)∆(B∩C)";
+		//U
+		stringExpression = "U";
 		parseExpressionToDraw(stringExpression, expression, universalExpression);
 		expressionResult = getResult(expression, universalExpression);
 		if(expressionResult.equals(result))
@@ -208,6 +217,7 @@ public class SetOperationCalculator
 			return getStringExpression(expression);
 		}
 		expression.clear();
+		
 		//B'
 		stringExpression = "B'";
 		parseExpressionToDraw(stringExpression, expression, universalExpression);
@@ -229,8 +239,57 @@ public class SetOperationCalculator
 				return getStringExpression(expression);
 			}
 			expression.clear();		
-		}
-		
+			
+			//CUSTOM A∪(B∩C)∆(B'∩C')
+			stringExpression = "A∪(B∩C)∆(B'∩C')";
+			parseExpressionToDraw(stringExpression, expression, universalExpression);
+			expressionResult = getResult(expression, universalExpression);
+			if(expressionResult.equals(result))
+			{
+				return getStringExpression(expression);
+			}
+			expression.clear();
+			
+			//CUSTOM A∪(B∩C)∩(B∪C)
+			stringExpression = "A∪(B∩C)∩(B∪C)";
+			parseExpressionToDraw(stringExpression, expression, universalExpression);
+			expressionResult = getResult(expression, universalExpression);
+			if(expressionResult.equals(result))
+			{
+				return getStringExpression(expression);
+			}
+			expression.clear();
+			
+			//CUSTOM A∪(B∩C)∆(B∪C)
+			stringExpression = "A∪(B∩C)∆(B∪C)";
+			parseExpressionToDraw(stringExpression, expression, universalExpression);
+			expressionResult = getResult(expression, universalExpression);
+			if(expressionResult.equals(result))
+			{
+				return getStringExpression(expression);
+			}
+			expression.clear();
+			
+			//CUSTOM A∪(B'∩C')∆(B∆C')
+			stringExpression = "A∪(B'∩C')∆(B∆C')";
+			parseExpressionToDraw(stringExpression, expression, universalExpression);
+			expressionResult = getResult(expression, universalExpression);
+			if(expressionResult.equals(result))
+			{
+				return getStringExpression(expression);
+			}
+			expression.clear();
+			
+			//CUSTOM A∪(B'∩C)∆(B∆C)
+			stringExpression = "A∪(B'∩C')∆(B∆C')";
+			parseExpressionToDraw(stringExpression, expression, universalExpression);
+			expressionResult = getResult(expression, universalExpression);
+			if(expressionResult.equals(result))
+			{
+				return getStringExpression(expression);
+			}
+			expression.clear();
+		}		
 		
 		//X?Y
 		for(String operator: operators)
@@ -241,7 +300,7 @@ public class SetOperationCalculator
 				{
 					stringExpression = "(" + set1 + operator + set2 + ")";
 					tempSets.add(stringExpression);
-					complexSets.add(stringExpression);
+					dualSets.add(stringExpression);
 					parseExpressionToDraw(stringExpression, expression, universalExpression);
 					expressionResult = getResult(expression, universalExpression);
 					if(expressionResult.equals(result))
@@ -256,6 +315,25 @@ public class SetOperationCalculator
 		sets.clear();
 		sets.addAll(tempSets);
 		tempSets.clear();
+		
+		//X?(Y?Z)
+		for(String operator: operators)
+		{			
+			for(String set1 : uniqueSets)
+			{
+				for(String set2 : dualSets)
+				{
+					stringExpression = set1 + operator + set2;
+					parseExpressionToDraw(stringExpression, expression, universalExpression);
+					expressionResult = getResult(expression, universalExpression);
+					if(expressionResult.equals(result))
+					{
+						return getStringExpression(expression);
+					}
+					expression.clear();
+				}
+			}
+		}
 		
 		//(X?Y)?(X?Y)
 		for(String operator : operators)
@@ -276,7 +354,7 @@ public class SetOperationCalculator
 				}
 			}
 		}
-		
+
 		sets.clear();
 		sets.addAll(tempSets);
 		tempSets.clear();
@@ -285,38 +363,37 @@ public class SetOperationCalculator
 		long elapsedTime = 0;
 		
 		//(X?Y)?(X?Y)?(X?Y)
-		for(String operator1 : operators)
-		{
-			for(String operator2 : operators)
-			{
-				for(String set1 : complexSets)
+				for(String operator1 : operators)
 				{
-					for(String set2 : complexSets)
+					for(String operator2 : operators)
 					{
-						for(String set3 : complexSets)
+						for(String set1 : sets)
 						{
-							elapsedTime = System.currentTimeMillis() - timestamp;
-							if(elapsedTime == 20000)
+							for(String set2 : sets)
 							{
-								return "Thread Exception"
-										+ "\n-Operation stopped after 20 seconds."
-										+ "\nCouldn't find result for "+result;
+								for(String set3 : sets)
+								{
+									elapsedTime = System.currentTimeMillis() - timestamp;
+									if(elapsedTime == 20000)
+									{
+										return "Thread Exception"
+												+ "\n-Operation stopped after 20 seconds."
+												+ "\nCouldn't find result for "+result;
+									}
+									stringExpression = set1+operator1+set2+operator2+set3;
+									tempSets.add(stringExpression);
+									parseExpressionToDraw(stringExpression, expression, universalExpression);
+									expressionResult = getResult(expression, universalExpression);
+									if(expressionResult.equals(result) /*&& expression.size() <= 17*/)
+									{
+										return getStringExpression(expression);
+									}
+									expression.clear();
+								}					
 							}
-							
-							stringExpression = set1+operator1+set2+operator2+set3;
-							tempSets.add(stringExpression);
-							parseExpressionToDraw(stringExpression, expression, universalExpression);
-							expressionResult = getResult(expression, universalExpression);
-							if(expressionResult.equals(result) /*&& expression.size() <= 17*/)
-							{
-								return getStringExpression(expression);
-							}
-							expression.clear();
-						}					
+						}				
 					}
-				}				
-			}
-		}
+				}
 		
 		return "Couldn't find result for "+result;
 	}
@@ -359,10 +436,10 @@ public class SetOperationCalculator
 			ArrayList<Token> universalElements
 			)
 	{
-		Set<String> elementsA = new LinkedHashSet<String>();
-		Set<String> elementsB = new LinkedHashSet<String>();
-		Set<String> elementsC = new LinkedHashSet<String>();
-		Set<String> elementsU = new LinkedHashSet<String>();
+		ArrayList<String> elementsA = new ArrayList<String>();
+		ArrayList<String> elementsB = new ArrayList<String>();
+		ArrayList<String> elementsC = new ArrayList<String>();
+		ArrayList<String> elementsU = new ArrayList<String>();
 		
 		if(PanelGraphics.isDraw3Circles())
 		{
@@ -389,6 +466,10 @@ public class SetOperationCalculator
 		//Parse expression after we know how many set we have
 		for(char c : input.toLowerCase().toCharArray())
 		{
+			if(c == 'u')
+			{
+				expression.add(new Token(elementsU, "U"));
+			}
 			if(c == 'a')
 			{
 				expression.add(new Token(elementsA, "A"));
@@ -413,7 +494,7 @@ public class SetOperationCalculator
 	{
 		String buffer = "";
 		boolean isASet = false;
-		Set<String> elements = new LinkedHashSet<String>();
+		ArrayList<String> elements = new ArrayList<String>();
 		
 		for(int i = 0; i < input.length(); i++)
 		{
@@ -594,7 +675,7 @@ public class SetOperationCalculator
 	
 	private Token applyComplement(Token universalElements, Token elements)
 	{
-		Set<String> buffer = new LinkedHashSet<String>();
+		ArrayList<String> buffer = new ArrayList<String>();
 		
 		for(String element : universalElements.elements)
 		{
@@ -618,43 +699,11 @@ public class SetOperationCalculator
 		
 		switch(operator.operator)
 		{
-		case "∈":
-
-			booleanToken.isBoolean = true;
-			booleanToken.booleanString = "false";
-			
-			if(elements1.elements.size() > 1)
-			{
-				for(String element : elements1.elements)
-				{
-					buffer = buffer.concat(element);
-					buffer = buffer.concat(";");
-				}
-				
-				if(elements2.elements.contains(buffer))
-				{
-					booleanToken.isBoolean = true;
-					booleanToken.booleanString = "true";
-				}
-			}
-			else
-			{
-				for(String element : elements1.elements)
-				{
-					if(elements2.elements.contains(element))
-					{
-						booleanToken.isBoolean = true;
-						booleanToken.booleanString = "true";
-					}
-				}
-			}
-			
-			return booleanToken;
-			
 		case "=":
 			
 			if(elements1.elements.containsAll(elements2.elements) &&
-			   elements2.elements.containsAll(elements1.elements))
+			   elements2.elements.containsAll(elements1.elements) &&
+			   elements1.elements.size() == elements2.elements.size())
 			{
 				booleanToken.isBoolean = true;
 				booleanToken.booleanString = "true";
@@ -666,7 +715,7 @@ public class SetOperationCalculator
 			}
 			
 			return booleanToken;
-			
+		case "∈":	
 		case "⊆":
 			
 			if(elements2.elements.containsAll(elements1.elements))

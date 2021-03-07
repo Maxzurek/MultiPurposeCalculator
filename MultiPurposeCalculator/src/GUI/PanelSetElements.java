@@ -110,9 +110,9 @@ public class PanelSetElements
 		
 		for(int i = 0; i < nameLabels.size(); i++)
 		{
-			String elements = "{";
+			String elements = "";
 			elements = elements.concat(elementTextFields.get(i).getText());
-			elements = elements.concat("}");
+			//elements = elements.concat("}");
 			
 			sets.put(nameLabels.get(i).getName(), elements);
 		}
@@ -165,19 +165,6 @@ public class PanelSetElements
 				nameLabels.add(nameLabel);
 				panelSetElements.add(nameLabels.get(i),gbc_newLabel);
 				
-				/*
-				JLabel curlyBracesLabel1 = new JLabel("{");
-				curlyBracesLabel1.setFont(new Font("Tahoma", Font.BOLD, 15));
-				curlyBracesLabels.add(curlyBracesLabel1);
-				GridBagConstraints gbc_curlyLabel1 = new GridBagConstraints();
-				gbc_curlyLabel1.fill = GridBagConstraints.HORIZONTAL;
-				//gbc_curlyLabel1.anchor = GridBagConstraints.EAST;
-				//gbc_curlyLabel1.insets = new Insets(0, 0, 0, 5);
-				gbc_curlyLabel1.gridx = 1;
-				gbc_curlyLabel1.gridy = i+1;
-				panelSetElements.add(curlyBracesLabel1, gbc_curlyLabel1);
-				*/
-				
 				JTextField textField = new JTextField(50);
 				textField.setText("{}");
 				textField.setName("elements" + i);
@@ -191,18 +178,6 @@ public class PanelSetElements
 				elementTextFields.add(textField);
 				panelSetElements.add(elementTextFields.get(i),gbc_textField);
 				
-				/*
-				JLabel curlyBracesLabel2 = new JLabel("}");
-				curlyBracesLabel2.setFont(new Font("Tahoma", Font.BOLD, 15));
-				curlyBracesLabels.add(curlyBracesLabel2);
-				GridBagConstraints gbc_curlyLabel2 = new GridBagConstraints();
-				gbc_curlyLabel2.fill = GridBagConstraints.HORIZONTAL;
-				//gbc_curlyLabel2.anchor = GridBagConstraints.EAST;
-				//gbc_curlyLabel2.insets = new Insets(0, 0, 0, 5);
-				gbc_curlyLabel2.gridx = 3;
-				gbc_curlyLabel2.gridy = i+1;
-				panelSetElements.add(curlyBracesLabel2, gbc_curlyLabel2);
-				*/
 			}		
 		}
 

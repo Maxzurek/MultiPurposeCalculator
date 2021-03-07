@@ -453,7 +453,7 @@ public class PanelCalculator
 	
 	private String getParsedSetExpression(String input)
 	{
-		String validSetNames = "UABC";
+		String validSetNames = "uabc";
 		boolean setNameFound = false;
 		String parsedExpression = "";
 		

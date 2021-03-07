@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JFrame;
 
+import utilities.FileManager;
+
 
 public class Core 
 {
@@ -12,7 +14,7 @@ public class Core
 	private Menu menu;
 	private PanelContainer panelContainer;
 	private static FileWriter myWriter;
-	private static String version = "7.2";
+	private static String version = "7.3";
 
 	/**
 	 * Launch the application.

@@ -18,17 +18,33 @@ public class FileManager
 	
 	public static void initializeFiles()
 	{
+		StringBuilder dirPath = new StringBuilder();
+		File tempFile = new File("tempFile");
+		
+		dirPath = dirPath.append(tempFile.getAbsolutePath());
+		dirPath.delete(dirPath.length()-8, dirPath.length());
+		
+		File circleAreaPositions = new File(dirPath+"CircleAreaPositions");
+		circleAreaPositions.mkdir();
+		tempFile.delete();
+		
+		
 		for(int i = 0; i < CIRCLE_3_NUMBER_OF_AREA; i++)
 		{
 			File areaPositions = new File("circle3areaPositions"+(i+1));
+			
 			files.add(areaPositions);
 			
 			 try 
 			 {
 			   if (areaPositions.createNewFile()) 
 			   {
-			     System.out.println("File created: " + areaPositions.getName());
+				   System.out.println("File created: " + areaPositions.getName());
 			   } 
+			   else
+			   {
+				   System.out.println("File: " + areaPositions.getName()+" already exists");
+			   }
 			 } 
 			 catch (IOException e) 
 			 {
@@ -61,7 +77,18 @@ public class FileManager
 	public static ArrayList<PanelGraphics.Point> readFile(String fileName) 
 	{
 		ArrayList<PanelGraphics.Point> points = new ArrayList<PanelGraphics.Point>();
-		File file = new File(fileName);
+		StringBuilder dirPath = new StringBuilder();
+		
+		File tempFile = new File("tempFile");	
+		dirPath = dirPath.append(tempFile.getAbsolutePath());
+		dirPath.delete(dirPath.length()-8, dirPath.length());
+		dirPath = dirPath.append("CircleAreaPositions");
+		
+		File circleAreaPositions = new File(dirPath.toString());
+		circleAreaPositions.mkdir();
+		tempFile.delete();
+		
+		File file = new File(dirPath+"\\"+fileName);
 
 		try 
 		{
